@@ -41,6 +41,8 @@ namespace toDoTask
                     case "C":
                     Environment.Exit(0);
                     break;
+                case "D":
+                    break;
                  
             }
 
