@@ -7,46 +7,55 @@ namespace toDoTask
     {
         static void Main(string[] args)
         {
-            string taskList;
-            string dateList;
-           
+        
+
             List<string> toDolist = new List<string>();
+            List<string> tasklist = new List<string>();
+            List<string> dateList = new List<string>();
 
             Console.WriteLine("TAsk Management");
             Console.WriteLine("A - Add Task");
             Console.WriteLine("B - View");
-            Console.WriteLine("C - Exit");
-            Console.WriteLine("D - Change Status");
-            
+            Console.WriteLine("C - Change Status");
+            Console.WriteLine("D - Exit");
+
 
             Console.WriteLine("Choose from the menu: ");
             string choise = Console.ReadLine();
+
+
+
+
 
             switch (choise)
             {
                 case "A":
                     Console.Write("Task to Do: ");
-                    string task = Console.ReadLine();
+                    string TaskList = Console.ReadLine();
                     Console.WriteLine("Date: ");
-                    string date = Console.ReadLine();
+                    string DateList = Console.ReadLine();
 
-                    toDolist.Add($"taskList{task}, dateList{date}");
+                    toDolist.Add($"taskList: {TaskList}, dateList: {DateList}");
 
-                    foreach (var log in toDolist) ;
-                    
+                    foreach (var log in toDolist)
+                    {
+                        Console.WriteLine("log");
+                    }
+
                     break;
-                    case "B":
+                case "B":
                     Console.WriteLine("log");
                     break;
-                    case "C":
-                    Environment.Exit(0);
+                case "C":
+
                     break;
                 case "D":
+                    Environment.Exit(0);
                     break;
-                 
+
             }
 
-            
+
 
 
         }
