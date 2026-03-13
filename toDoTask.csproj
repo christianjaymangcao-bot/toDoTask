@@ -7,4 +7,24 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ToDoTaskAppServise\**" />
+    <Compile Remove="ToDoTaskDataServise\**" />
+    <Compile Remove="ToDoTaskModels\**" />
+    <Compile Remove="ToDoTaskModule\**" />
+    <EmbeddedResource Remove="ToDoTaskAppServise\**" />
+    <EmbeddedResource Remove="ToDoTaskDataServise\**" />
+    <EmbeddedResource Remove="ToDoTaskModels\**" />
+    <EmbeddedResource Remove="ToDoTaskModule\**" />
+    <None Remove="ToDoTaskAppServise\**" />
+    <None Remove="ToDoTaskDataServise\**" />
+    <None Remove="ToDoTaskModels\**" />
+    <None Remove="ToDoTaskModule\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="ToDoTaskAppServise\ToDoTaskAppServise.csproj" />
+    <ProjectReference Include="ToDoTaskModule\ToDoTaskModels.csproj" />
+  </ItemGroup>
+
 </Project>
