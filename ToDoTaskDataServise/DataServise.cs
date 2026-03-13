@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using ToDoTaskModels;
 
 namespace ToDoTaskDataServise
 {
-    public class DataServise
+    public class DataService
     {
-        List<Data> ToDoList = new List<Data>();
+        public List<Data> ToDoList = new List<Data>();
 
-        public void AddTask(Data task)
+        public void AddTask(Data data)
         {
-            ToDoList.Add(task);
+            ToDoList.Add(data);
         }
+
         public List<Data> GetTasks()
         {
             return ToDoList;
         }
-
     }
 }

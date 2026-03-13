@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ToDoTaskDataServise;
 using ToDoTaskModels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using ToDoTaskDataServise;
+
 
 namespace ToDoTaskAppServise
 {
     public class TaskService
     {
-        DataServise dataService = new DataServise();
+        DataService dataService = new DataService();
 
         public void AddTask(Data data)
         {

@@ -6,8 +6,7 @@ namespace ToDoTaskModels
 {
     public class Data
     {
-        public string task { get; set; }
-        public string date { get; set; }
-        public string newTask { get; set; }
+        public string TaskName{ get; set; }
+        public string Date { get; set; }
     }
 }

@@ -55,10 +55,10 @@ namespace toDoTask
             Console.Write("Date: ");
             string date = Console.ReadLine();
 
-            Data newTask = new Data
+            Data newTask = new Data()
             {
-                TaskName = task,
-                Date = date
+                TaskName=task,
+                Date=date
             };
 
             taskService.AddTask(newTask);
