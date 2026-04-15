@@ -10,7 +10,8 @@ namespace ToDoTaskAppServise
 {
     public class TaskService
     {
-        DataService dataService = new DataService();
+        //DataService dataService = new DataService();
+        JSONDataService dataService = new JSONDataService();
 
         public void AddTask(Data data)
         {
@@ -21,5 +22,14 @@ namespace ToDoTaskAppServise
         {
             return dataService.GetTasks();
         }
+        public void UpdateStatus(int index, string newStatus)
+        {
+            dataService.UpdateStatus(index, newStatus);
+        }
+        public void DeleteTask(int index)
+        {
+            dataService.DeleteTask(index);
+        }
+
     }
 }

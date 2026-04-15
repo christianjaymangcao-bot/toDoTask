@@ -8,6 +8,7 @@ namespace ToDoTaskDataServise
     {
         public List<Data> ToDoList = new List<Data>();
 
+
         public void AddTask(Data data)
         {
             ToDoList.Add(data);
@@ -17,5 +18,20 @@ namespace ToDoTaskDataServise
         {
             return ToDoList;
         }
+        public void UpdateStatus(int index, string newStatus)
+        {
+            if (index >= 0 && index < ToDoList.Count)
+            {
+                ToDoList[index].Status = newStatus;
+            }
+        }
+        public void DeleteTask(int index)
+        {
+            if (index >= 0 && index < ToDoList.Count)
+            {
+                ToDoList.RemoveAt(index);
+            }
+        }
+
     }
 }

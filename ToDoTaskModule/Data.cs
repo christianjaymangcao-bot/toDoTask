@@ -8,5 +8,6 @@ namespace ToDoTaskModels
     {
         public string TaskName{ get; set; }
         public string Date { get; set; }
+        public string Status { get; set; } = "Pending";
     }
 }
