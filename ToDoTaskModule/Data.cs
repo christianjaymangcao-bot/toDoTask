@@ -6,8 +6,9 @@ namespace ToDoTaskModels
 {
     public class Data
     {
-        public string TaskName{ get; set; }
+        public Guid TaskId { get; set; }
+        public string TaskName { get; set; }
         public string Date { get; set; }
-        public string Status { get; set; } = "Pending";
+        public string Status { get; set; }
     }
 }

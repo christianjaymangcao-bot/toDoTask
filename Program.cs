@@ -9,22 +9,23 @@ namespace toDoTask
     {
         static TaskService taskService = new TaskService();
 
+        static List<Data> cachedTasks = new List<Data>();
+
         static void Main(string[] args)
         {
-            bool running = true;
-
-            while (running)
+            while (true)
             {
-                Console.WriteLine("\nTask Management");
+                Console.WriteLine("\n===== TASK MANAGEMENT =====");
                 Console.WriteLine("A - Add Task");
                 Console.WriteLine("B - View Tasks");
                 Console.WriteLine("C - Change Status");
                 Console.WriteLine("D - Delete Task");
                 Console.WriteLine("E - Exit");
-                Console.Write("Choose from the menu: ");
-                string choice = Console.ReadLine();
 
-                switch (choice.ToUpper())
+                Console.Write("Choose: ");
+                string choice = Console.ReadLine().ToUpper();
+
+                switch (choice)
                 {
                     case "A":
                         AddTask();
@@ -37,146 +38,140 @@ namespace toDoTask
                     case "C":
                         ChangeStatus();
                         break;
+
                     case "D":
                         DeleteTask();
                         break;
+
                     case "E":
-                        Exit();
+                        Environment.Exit(0);
                         break;
 
                     default:
-                        Console.WriteLine("Invalid choice, please try again.");
+                        Console.WriteLine("Invalid choice!");
                         break;
                 }
             }
         }
 
+        
         static void AddTask()
         {
-            Console.Write("Task to Do: ");
+            Console.Write("Task: ");
             string task = Console.ReadLine();
 
             Console.Write("Date: ");
             string date = Console.ReadLine();
 
-            Data newTask = new Data()
+            taskService.AddTask(new Data
             {
-                TaskName=task,
-                Date=date
-            };
+                TaskId = Guid.NewGuid(),
+                TaskName = task,
+                Date = date,
+                Status = "Pending"
+            });
 
-            taskService.AddTask(newTask);
-
-            Console.WriteLine("Task added successfully!");
+            Console.WriteLine("Task added!");
         }
 
+        
         static void ViewTask()
         {
-            List<Data> tasks = taskService.GetTasks();
+            cachedTasks = taskService.GetTasks();
 
-            Console.WriteLine("\n--- Task List ---");
+            Console.WriteLine("\n--- TASK LIST ---");
 
-            if (tasks.Count == 0)
+            if (cachedTasks.Count == 0)
             {
                 Console.WriteLine("No tasks available.");
+                return;
             }
-            else
+
+            for (int i = 0; i < cachedTasks.Count; i++)
             {
-                int i = 1;
-                foreach (var task in tasks)
-                {
-                    Console.WriteLine($"{i}. Task: {task.TaskName}, Date: {task.Date},Status: {task.Status}");
-                    i++;
-                }
+                var t = cachedTasks[i];
+
+                Console.WriteLine(
+                    (i + 1) + ". " +
+                    "ID: " + t.TaskId + " | " +
+                    t.TaskName + " | " +
+                    t.Date + " | " +
+                    t.Status
+                );
             }
         }
+
         static void ChangeStatus()
         {
-            List<Data> tasks = taskService.GetTasks();
+            ViewTask();
 
-            if (tasks.Count == 0)
+            if (cachedTasks.Count == 0)
+                return;
+
+            Console.Write("\nSelect task number: ");
+            int index = int.Parse(Console.ReadLine());
+
+            if (index < 1 || index > cachedTasks.Count)
             {
-                Console.WriteLine("No tasks available.");
+                Console.WriteLine("Invalid selection!");
                 return;
             }
 
-            Console.WriteLine("\n--- Task List ---");
-
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {tasks[i].TaskName} - {tasks[i].Status}");
-            }
-
-            Console.Write("\nEnter task number to update: ");
-            if (!int.TryParse(Console.ReadLine(), out int index) || index < 1 || index > tasks.Count)
-            {
-                Console.WriteLine("Invalid selection.");
-                return;
-            }
-
-            Console.WriteLine("\nSelect new status:");
             Console.WriteLine("1 - Pending");
             Console.WriteLine("2 - Ongoing");
             Console.WriteLine("3 - Done");
-            Console.Write("Enter choice: ");
 
             string input = Console.ReadLine();
-            string newStatus = "";
+            string status = "";
 
             switch (input)
             {
                 case "1":
-                    newStatus = "Pending";
+                    status = "Pending";
                     break;
+
                 case "2":
-                    newStatus = "Ongoing";
+                    status = "Ongoing";
                     break;
+
                 case "3":
-                    newStatus = "Done";
+                    status = "Done";
                     break;
+
                 default:
-                    Console.WriteLine("Invalid status.");
+                    Console.WriteLine("Invalid status!");
                     return;
             }
 
-            
-            taskService.UpdateStatus(index - 1, newStatus);
+            Guid id = cachedTasks[index - 1].TaskId;
 
-            Console.WriteLine("Status updated successfully!");
+            taskService.UpdateStatus(id, status);
+
+            Console.WriteLine("Status updated!");
         }
+
+       
         static void DeleteTask()
         {
-            List<Data> tasks = taskService.GetTasks();
+            ViewTask();
 
-            if (tasks.Count == 0)
+            if (cachedTasks.Count == 0)
+                return;
+
+            Console.Write("\nSelect task number to delete: ");
+            int index = int.Parse(Console.ReadLine());
+
+            if (index < 1 || index > cachedTasks.Count)
             {
-                Console.WriteLine("No tasks available.");
+                Console.WriteLine("Invalid selection!");
                 return;
             }
 
-            Console.WriteLine("\n--- Task List ---");
+            Guid id = cachedTasks[index - 1].TaskId;
 
-            for (int i = 0; i < tasks.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {tasks[i].TaskName} - {tasks[i].Status}");
-            }
+            taskService.DeleteTask(id);
 
-            Console.Write("\nEnter task number to delete: ");
-            if (!int.TryParse(Console.ReadLine(), out int index) || index < 1 || index > tasks.Count)
-            {
-                Console.WriteLine("Invalid selection.");
-                return;
-            }
-
-            taskService.DeleteTask(index - 1);
-
-            Console.WriteLine("Task deleted successfully!");
-        }
-
-        static void Exit()
-        {
-            Console.WriteLine("Exiting program...");
-            Environment.Exit(0);
+            Console.WriteLine("Task deleted!");
         }
     }
 }

@@ -1,94 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using ToDoTaskModels;
 
 namespace ToDoTaskDataServise
 {
-    public class JSONDataService
+    public class TaskJsonData
     {
+        private string filePath = "tasks.json";
+
         private List<Data> tasks = new List<Data>();
-        private string _filePath;
 
-        public JSONDataService()
+        public TaskJsonData()
         {
-            _filePath = $"{AppDomain.CurrentDomain.BaseDirectory}/tasks.json";
+            LoadFromFile();
         }
 
         
-        private void Load()
+        private void LoadFromFile()
         {
-            if (!File.Exists(_filePath))
+            if (!File.Exists(filePath))
             {
-                tasks = new List<Data>();
-                return;
+                File.WriteAllText(filePath, "[]");
             }
 
-            var json = File.ReadAllText(_filePath);
+            string json = File.ReadAllText(filePath);
 
-            if (string.IsNullOrWhiteSpace(json))
-            {
-                tasks = new List<Data>();
-                return;
-            }
-
-            tasks = JsonSerializer.Deserialize<List<Data>>(json,
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                }) ?? new List<Data>();
+            tasks = JsonSerializer.Deserialize<List<Data>>(json) ?? new List<Data>();
         }
 
         
-        private void Save()
+        private void SaveToFile()
         {
-            var json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions
+            string json = JsonSerializer.Serialize(tasks, new JsonSerializerOptions
             {
                 WriteIndented = true
             });
 
-            File.WriteAllText(_filePath, json);
+            File.WriteAllText(filePath, json);
         }
 
-       
-        public void AddTask(Data data)
+      
+        public void AddTask(Data task)
         {
-            Load();
-            tasks.Add(data);
-            Save();
+            tasks.Add(task);
+            SaveToFile();
         }
 
         
         public List<Data> GetTasks()
         {
-            Load();
+            LoadFromFile();
             return tasks;
         }
 
-        
-        public void UpdateStatus(int index, string status)
+    
+        public void UpdateStatus(Guid id, string status)
         {
-            Load();
+            LoadFromFile();
 
-            if (index >= 0 && index < tasks.Count)
+            var task = tasks.Find(t => t.TaskId == id);
+
+            if (task != null)
             {
-                tasks[index].Status = status;
-                Save();
+                task.Status = status;
+                SaveToFile();
             }
         }
 
         
-        public void DeleteTask(int index)
+        public void DeleteTask(Guid id)
         {
-            Load();
+            LoadFromFile();
 
-            if (index >= 0 && index < tasks.Count)
-            {
-                tasks.RemoveAt(index);
-                Save();
-            }
+            tasks.RemoveAll(t => t.TaskId == id);
+
+            SaveToFile();
         }
     }
 }

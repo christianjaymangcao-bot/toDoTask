@@ -11,25 +11,27 @@ namespace ToDoTaskAppServise
     public class TaskService
     {
         //DataService dataService = new DataService();
-        JSONDataService dataService = new JSONDataService();
+        //JSONDataService dataService = new JSONDataService();
+        TaskDBData dataService = new TaskDBData();
 
-        public void AddTask(Data data)
+        public void AddTask(Data task)
         {
-            dataService.AddTask(data);
+            dataService.AddTask(task);
         }
 
         public List<Data> GetTasks()
         {
             return dataService.GetTasks();
         }
-        public void UpdateStatus(int index, string newStatus)
+
+        public void UpdateStatus(Guid id, string status)
         {
-            dataService.UpdateStatus(index, newStatus);
-        }
-        public void DeleteTask(int index)
-        {
-            dataService.DeleteTask(index);
+            dataService.UpdateStatus(id, status);
         }
 
+        public void DeleteTask(Guid id)
+        {
+            dataService.DeleteTask(id);
+        }
     }
 }

@@ -6,32 +6,44 @@ namespace ToDoTaskDataServise
 {
     public class DataService
     {
-        public List<Data> ToDoList = new List<Data>();
+        private List<Data> ToDoList = new List<Data>();
 
-
+        
         public void AddTask(Data data)
         {
             ToDoList.Add(data);
         }
 
+        
         public List<Data> GetTasks()
         {
             return ToDoList;
         }
-        public void UpdateStatus(int index, string newStatus)
+
+        
+        public void UpdateStatus(Guid id, string newStatus)
         {
-            if (index >= 0 && index < ToDoList.Count)
+            for (int i = 0; i < ToDoList.Count; i++)
             {
-                ToDoList[index].Status = newStatus;
-            }
-        }
-        public void DeleteTask(int index)
-        {
-            if (index >= 0 && index < ToDoList.Count)
-            {
-                ToDoList.RemoveAt(index);
+                if (ToDoList[i].TaskId == id)
+                {
+                    ToDoList[i].Status = newStatus;
+                    break;
+                }
             }
         }
 
+        
+        public void DeleteTask(Guid id)
+        {
+            for (int i = 0; i < ToDoList.Count; i++)
+            {
+                if (ToDoList[i].TaskId == id)
+                {
+                    ToDoList.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }
